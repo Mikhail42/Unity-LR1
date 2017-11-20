@@ -4,9 +4,11 @@ using UnityEngine;
 public class BallCreator : MonoBehaviour
 {
     public static readonly float CAMERA_Z = 10f;
+    private static readonly System.Random randomGen = new System.Random();
 
-    public GameObject pickup;
+    public GameObject ball;
 
+    //public Rigidbody2D rb2d;
     private List<Ball> balls;
 
     void Start()
@@ -28,12 +30,11 @@ public class BallCreator : MonoBehaviour
         wordPosition.z = CAMERA_Z;
         wordPosition = Camera.main.ScreenToWorldPoint(wordPosition);
 
-        GameObject pickupClone = Instantiate(pickup);
-        pickupClone.transform.SetPositionAndRotation(wordPosition, new Quaternion());
-        pickupClone.SetActive(true);
+        Color initColor = new Color(randomGen.Next(255), randomGen.Next(255), randomGen.Next(255), 255) / 255;
 
-        Ball ball = new Ball(pickupClone);
-        balls.Add(ball);
+        GameObject pickupClone = Instantiate(ball);
+
+        balls.Add(new Ball(pickupClone, wordPosition, initColor));
     }
 
     private void OnRightClick()
@@ -43,8 +44,9 @@ public class BallCreator : MonoBehaviour
             // Debug.Log(ball.ToString());
             if (ball.IsSelected())
             {
-                ball.AddForce(new Vector2(100f, 300f));
-                ball.SetInitColor();
+                //ball.AddForce(new Vector2(100f, 300f));
+                //ball.SetInitColor();
+                //Debug.Assert(!ball.IsSelected());
             }
         }
     }
