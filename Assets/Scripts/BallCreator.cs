@@ -6,9 +6,8 @@ public class BallCreator : MonoBehaviour
     public static readonly float CAMERA_Z = 10f;
     private static readonly System.Random randomGen = new System.Random();
 
-    public GameObject ball;
+    public Rigidbody2D ballRb2d;
 
-    //public Rigidbody2D rb2d;
     private List<Ball> balls;
 
     void Start()
@@ -29,24 +28,23 @@ public class BallCreator : MonoBehaviour
         Vector3 wordPosition = Input.mousePosition;
         wordPosition.z = CAMERA_Z;
         wordPosition = Camera.main.ScreenToWorldPoint(wordPosition);
+        // I don't know how to awoid bugs otherwise.
+        wordPosition.z = -0.1f;
 
         Color initColor = new Color(randomGen.Next(255), randomGen.Next(255), randomGen.Next(255), 255) / 255;
-
-        GameObject pickupClone = Instantiate(ball);
-
-        balls.Add(new Ball(pickupClone, wordPosition, initColor));
+        Rigidbody2D ballRb2dClone = Instantiate(ballRb2d, wordPosition, new Quaternion());
+        ballRb2dClone.transform.localScale = new Vector3(1f, 1f, 1f)  * (float)(randomGen.NextDouble() + 0.5);
+        balls.Add(new Ball(ballRb2dClone, initColor));
     }
 
     private void OnRightClick()
     {
         foreach (Ball ball in balls)
         {
-            // Debug.Log(ball.ToString());
             if (ball.IsSelected())
             {
-                //ball.AddForce(new Vector2(100f, 300f));
-                //ball.SetInitColor();
-                //Debug.Assert(!ball.IsSelected());
+                ball.AddForce(new Vector2(0f, 3000f));
+                ball.SetInitColor();
             }
         }
     }

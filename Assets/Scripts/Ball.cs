@@ -6,15 +6,13 @@ public class Ball
     private readonly Color initColor;
     private readonly Rigidbody2D rb2d;
     
-    public Ball(GameObject gameObject, Vector3 wordPosition, Color initColor)
+    public Ball(Rigidbody2D ballRb2d, Color initColor)
     {
-        material = gameObject.GetComponent<Renderer>().material;
+        material = ballRb2d.gameObject.GetComponent<Renderer>().material;
         material.color = initColor;
         this.initColor = initColor;
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
-
-        gameObject.transform.SetPositionAndRotation(wordPosition, new Quaternion());
-        gameObject.SetActive(true);
+        rb2d = ballRb2d;
+        rb2d.gameObject.SetActive(true);
     }
 
     public void AddForce(Vector2 force)
